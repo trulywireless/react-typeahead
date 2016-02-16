@@ -241,6 +241,7 @@ var TypeaheadTokenizer = React.createClass({displayName: "TypeaheadTokenizer",
     defaultSelected: React.PropTypes.array,
     defaultValue: React.PropTypes.string,
     placeholder: React.PropTypes.string,
+    emptyMessage: React.PropTypes.string,
     inputProps: React.PropTypes.object,
     onTokenRemove: React.PropTypes.func,
     onKeyDown: React.PropTypes.func,
@@ -257,7 +258,8 @@ var TypeaheadTokenizer = React.createClass({displayName: "TypeaheadTokenizer",
       React.PropTypes.func
     ]),
     maxVisible: React.PropTypes.number,
-    defaultClassNames: React.PropTypes.bool
+    defaultClassNames: React.PropTypes.bool,
+    defaultSuggestions: React.PropTypes.number
   },
 
   getInitialState: function() {
@@ -390,6 +392,7 @@ var TypeaheadTokenizer = React.createClass({displayName: "TypeaheadTokenizer",
         React.createElement(Typeahead, {ref: "typeahead", 
           className: classList, 
           placeholder: this.props.placeholder, 
+          emptyMessage: this.props.emptyMessage, 
           inputProps: this.props.inputProps, 
           allowCustomValues: this.props.allowCustomValues, 
           customClasses: this.props.customClasses, 
@@ -403,7 +406,8 @@ var TypeaheadTokenizer = React.createClass({displayName: "TypeaheadTokenizer",
           onBlur: this.props.onBlur, 
           displayOption: this.props.displayOption, 
           defaultClassNames: this.props.defaultClassNames, 
-          filterOption: this.props.filterOption})
+          filterOption: this.props.filterOption, 
+          defaultSuggestions: this.props.defaultSuggestions})
       )
     );
   }
@@ -513,7 +517,7 @@ var Typeahead = React.createClass({displayName: "Typeahead",
     defaultValue: React.PropTypes.string,
     value: React.PropTypes.string,
     placeholder: React.PropTypes.string,
-    emptyPlaceholder: React.PropTypes.string,
+    emptyMessage: React.PropTypes.string,
     textarea: React.PropTypes.bool,
     inputProps: React.PropTypes.object,
     onOptionSelected: React.PropTypes.func,
@@ -639,7 +643,7 @@ var Typeahead = React.createClass({displayName: "Typeahead",
         customClasses: this.props.customClasses, 
         selectionIndex: this.state.selectionIndex, 
         defaultClassNames: this.props.defaultClassNames, 
-        emptyPlaceholder: this.props.emptyPlaceholder, 
+        emptyMessage: this.props.emptyMessage, 
         displayOption: this._generateOptionToStringFor(this.props.displayOption)})
     );
   },
