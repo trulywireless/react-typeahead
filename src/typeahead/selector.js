@@ -18,7 +18,8 @@ var TypeaheadSelector = React.createClass({
     selectionIndex: React.PropTypes.number,
     onOptionSelected: React.PropTypes.func,
     displayOption: React.PropTypes.func.isRequired,
-    defaultClassNames: React.PropTypes.bool
+    defaultClassNames: React.PropTypes.bool,
+    emptyMessage: React.PropTypes.string
   },
 
   getDefaultProps: function() {
@@ -27,7 +28,8 @@ var TypeaheadSelector = React.createClass({
       customClasses: {},
       customValue: null,
       onOptionSelected: function(option) { },
-      defaultClassNames: true
+      defaultClassNames: true,
+      emptyMessage: "No results found."
     };
   },
 
@@ -67,6 +69,11 @@ var TypeaheadSelector = React.createClass({
       );
     }, this);
 
+    if (!results.length) {
+      results = [
+        <TypeaheadOption customClasses="empty">{this.props.emptyMessage}</TypeaheadOption>
+      ]
+    }
 
     return (
       <ul className={classList}>
