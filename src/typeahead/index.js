@@ -30,7 +30,7 @@ var Typeahead = React.createClass({
     defaultValue: React.PropTypes.string,
     value: React.PropTypes.string,
     placeholder: React.PropTypes.string,
-    emptyPlaceholder: React.PropTypes.string,
+    emptyMessage: React.PropTypes.string,
     textarea: React.PropTypes.bool,
     inputProps: React.PropTypes.object,
     onOptionSelected: React.PropTypes.func,
@@ -156,7 +156,7 @@ var Typeahead = React.createClass({
         customClasses={this.props.customClasses}
         selectionIndex={this.state.selectionIndex}
         defaultClassNames={this.props.defaultClassNames}
-        emptyPlaceholder={this.props.emptyPlaceholder}
+        emptyMessage={this.props.emptyMessage}
         displayOption={this._generateOptionToStringFor(this.props.displayOption)} />
     );
   },
