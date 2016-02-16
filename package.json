@@ -9,10 +9,10 @@
     "autocomplete",
     "react-component"
   ],
-  "homepage": "https://github.com/fmoo/react-typeahead",
+  "homepage": "https://github.com/trulywireless/react-typeahead",
   "bugs": {
-    "url": "https://github.com/fmoo/react-typeahead/issues",
-    "email": "ruibalp@gmail.com"
+    "url": "https://github.com/trulywireless/react-typeahead/issues",
+    "email": "napsel@gmail.com"
   },
   "license": "ISC",
   "author": {
@@ -29,7 +29,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/fmoo/react-typeahead.git"
+    "url": "https://github.com/trulywireless/react-typeahead.git"
   },
   "dependencies": {
     "classnames": "^1.2.0",
@@ -63,7 +63,8 @@
     "build": "browserify ./src/react-typeahead.js -t reactify -t literalify -x react -s ReactTypeahead -o ./dist/react-typeahead.js",
     "watchify": "watchify ./src/react-typeahead.js -t reactify -t literalify -x react -s ReactTypeahead -o ./dist/react-typeahead.js",
     "lib": "gulp build",
-    "prepublish": "npm run lib"
+    "prepublish": "npm run lib",
+    "postinstall": "npm run lib"
   },
   "literalify": {
     "react": "window.React || require('react')"
