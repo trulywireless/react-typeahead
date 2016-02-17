@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/css/topcoat-mobile-dark.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="../node_modules/react/dist/react-with-addons.js"></script>
-    <script src="../node_modules/react/dist/JSXTransformer.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
     <script src="../dist/react-typeahead.js"></script>
   </head>
   <body>
@@ -52,31 +52,26 @@
 /** @jsx React.DOM */
 
 (function(){
-  var req = new XMLHttpRequest();
-  req.open('GET', 'files.txt');
 
-  req.onload = function() {
-    if (req.status !== 200) {
-      throw new Error('nope');
-    }
 
     React.render(
       <ReactTypeahead.Tokenizer
-        options={req.response.split('\n')}
-        allowCustomValues={4}
+        options={
+          ["foobar", "spameggs", "hameggs",
+           "spamfoo", "spam"]}
+        defaultSuggestions={5}
+        emptyMessage="No results found."
         customClasses={{
           typeahead: "topcoat-list",
           input: "topcoat-text-input",
           results: "topcoat-list__container",
           listItem: "topcoat-list__item",
           token: "topcoat-button",
-          customAdd: "topcoat-addme"
         }} />,
       document.getElementById("typeahead")
     );
-  };
+  
 
-  req.send();
 })()
 
     </script>

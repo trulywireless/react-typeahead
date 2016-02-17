@@ -626,9 +626,10 @@ var Typeahead = React.createClass({displayName: "Typeahead",
     // Nothing has been entered into the textbox
     // there are no default suggestions or the textbox is not in focus
     if (!this.state.entryValue && 
-        (!this.props.defaultSuggestions || this.refs.entry != document.activeElement)) {
+        (!this.props.defaultSuggestions || !this.state.focus)) {
       return "";
     }
+    
 
     // Something was just selected
     if (this.state.selection) {
@@ -673,7 +674,8 @@ var Typeahead = React.createClass({displayName: "Typeahead",
     nEntry.value = optionString;
     this.setState({visible: this.getOptionsForValue(optionString, this.props.options),
                    selection: formInputOptionString,
-                   entryValue: optionString});
+                   entryValue: optionString,
+                   focus: false});
     return this.props.onOptionSelected(option, event);
   },
 
@@ -681,22 +683,18 @@ var Typeahead = React.createClass({displayName: "Typeahead",
     var value = this.refs.entry.value;
     this.setState({visible: this.getOptionsForValue(value, this.props.options),
                    selection: null,
-                   entryValue: value});
+                   entryValue: value,
+                   focus: false});
   },
 
   _onFocus: function(event){
-    if (this.props.defaultSuggestions) {
-      this.setState({visible: this.getOptionsForValue("", this.props.options),
-                     selection: null,
-                     entryValue: ""});      
+    var state = {focus: true};
+    if (this.props.defaultSuggestions && !this.state.visible.length) {
+      state.visible = this.getOptionsForValue("", this.props.options);
     }
-
+    
+    this.setState(state);
     this.props.onFocus(event);
-  },
-
-  _onBlur: function(event){
-    this.setState({visible: []});
-    this.props.onBlur(event);
   },
     
   _onEnter: function(event) {
@@ -793,10 +791,25 @@ var Typeahead = React.createClass({displayName: "Typeahead",
     event.preventDefault();
   },
 
+  _handleClick: function(event) {
+    var el = event.target;
+    if (!this.refs.typeahead.contains(event.target)) {
+     this.setState({focus: false})
+   }
+  },
+  
   componentWillReceiveProps: function(nextProps) {
     this.setState({
       visible: this.getOptionsForValue(this.state.entryValue, nextProps.options)
     });
+  },
+
+  componentWillMount: function () {
+      document.addEventListener('click', this._handleClick, false);
+  },
+
+  componentWillUnmount: function () {
+      document.removeEventListener('click', this._handleClick, false);
   },
 
   render: function() {
@@ -813,7 +826,7 @@ var Typeahead = React.createClass({displayName: "Typeahead",
     var InputElement = this.props.textarea ? 'textarea' : 'input';
 
     return (
-      React.createElement("div", {className: classList}, 
+      React.createElement("div", {className: classList, ref: "typeahead"}, 
          this._renderHiddenInput(), 
         React.createElement(InputElement, React.__spread({ref: "entry", type: "text"}, 
           this.props.inputProps, 
@@ -825,7 +838,7 @@ var Typeahead = React.createClass({displayName: "Typeahead",
           onKeyDown: this._onKeyDown, 
           onKeyUp: this.props.onKeyUp, 
           onFocus: this._onFocus, 
-          onBlur: this._onBlur})
+          onBlur: this.props.onBlur})
         ), 
          this._renderIncrementalSearchResults() 
       )
@@ -1024,10 +1037,8 @@ var TypeaheadSelector = React.createClass({displayName: "TypeaheadSelector",
       );
     }, this);
 
-    if (!results.length) {
-      results = [
-        React.createElement(TypeaheadOption, {customClasses: "empty"}, this.props.emptyMessage)
-      ]
+    if (!results.length && this.props.customValue == null) {
+      customValue = React.createElement(TypeaheadOption, {customClasses: {listItem: "topcoat-list__item__empty"}, onClick: function(){}}, this.props.emptyMessage)
     }
 
     return (
