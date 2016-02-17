@@ -804,7 +804,9 @@ var Typeahead = React.createClass({displayName: "Typeahead",
 
   _handleClick: function(event) {
     var el = event.target;
-    if (!this.refs.typeahead.contains(event.target)) {
+    // if the click is not in the typeahead, then close the typeahead
+    if (this.state.focus && 
+          !this.refs.typeahead.contains(el) && el.className.indexOf("typeahead-tokenizer") == -1) {
      this.setState({focus: false})
    }
   },
