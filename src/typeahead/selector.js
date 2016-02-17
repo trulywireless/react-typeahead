@@ -70,7 +70,7 @@ var TypeaheadSelector = React.createClass({
     }, this);
 
     if (!results.length && this.props.customValue == null) {
-      customValue = <TypeaheadOption customClasses={{listItem: "topcoat-list__item__empty"}} onClick={function(){}}>{this.props.emptyMessage}</TypeaheadOption>
+      customValue = <TypeaheadOption customClasses={{listItem: "list__item__empty"}} onClick={function(){}}>{this.props.emptyMessage}</TypeaheadOption>
     }
 
     return (

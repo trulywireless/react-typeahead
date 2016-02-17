@@ -32,6 +32,7 @@ var TypeaheadTokenizer = React.createClass({
     allowCustomValues: React.PropTypes.number,
     defaultSelected: React.PropTypes.array,
     defaultValue: React.PropTypes.string,
+    textarea: React.PropTypes.bool,
     placeholder: React.PropTypes.string,
     emptyMessage: React.PropTypes.string,
     inputProps: React.PropTypes.object,
@@ -51,7 +52,8 @@ var TypeaheadTokenizer = React.createClass({
     ]),
     maxVisible: React.PropTypes.number,
     defaultClassNames: React.PropTypes.bool,
-    defaultSuggestions: React.PropTypes.number
+    defaultSuggestions: React.PropTypes.number,
+    focusOnContainerClick: React.PropTypes.bool
   },
 
   getInitialState: function() {
@@ -73,6 +75,7 @@ var TypeaheadTokenizer = React.createClass({
       inputProps: {},
       defaultClassNames: true,
       filterOption: null,
+      focusOnContainerClick: false,
       displayOption: function(token){return token },
       onKeyDown: function(event) {},
       onKeyUp: function(event) {},
@@ -169,6 +172,12 @@ var TypeaheadTokenizer = React.createClass({
     this.refs.typeahead.setEntryText("");
     this.props.onTokenAdd(value);
   },
+  
+  _containerOnClick: function() {
+    if (this.props.focusOnContainerClick) {
+      this.refs.typeahead.refs.entry.focus()
+    }
+  },
 
   render: function() {
     var classes = {};
@@ -179,13 +188,14 @@ var TypeaheadTokenizer = React.createClass({
     var tokenizerClassList = classNames(tokenizerClasses)
 
     return (
-      <div className={tokenizerClassList}>
+      <div className={tokenizerClassList} onClick={this._containerOnClick}>
         { this._renderTokens() }
         <Typeahead ref="typeahead"
           className={classList}
           placeholder={this.props.placeholder}
           emptyMessage={this.props.emptyMessage}
           inputProps={this.props.inputProps}
+          textarea={this.props.textarea}
           allowCustomValues={this.props.allowCustomValues}
           customClasses={this.props.customClasses}
           options={this._getOptionsForTypeahead()}
@@ -199,7 +209,8 @@ var TypeaheadTokenizer = React.createClass({
           displayOption={this.props.displayOption}
           defaultClassNames={this.props.defaultClassNames}
           filterOption={this.props.filterOption} 
-          defaultSuggestions={this.props.defaultSuggestions} />
+          defaultSuggestions={this.props.defaultSuggestions}
+          focusOnContainerClick={this.props.focusOnContainerClick} />
       </div>
     );
   }
