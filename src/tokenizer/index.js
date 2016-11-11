@@ -107,10 +107,11 @@ var TypeaheadTokenizer = React.createClass({
     var tokenClasses = {};
     tokenClasses[this.props.customClasses.token] = !!this.props.customClasses.token;
     var classList = classNames(tokenClasses);
-    var result = this.state.selected.map(function(selected) {
+    var result = this.state.selected.map(function(selected, index) {
       var displayString = this.props.displayOption(selected);
+      var key = displayString + "_" + index;
       return (
-        <Token key={ displayString } className={classList}
+        <Token key={ key } className={classList}
           onRemove={ this._removeTokenForValue }
           object={selected}
           name={ this.props.name }>
